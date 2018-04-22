@@ -15,7 +15,6 @@ class Product {
 	static async load() {
 
 		Product.response = (await (await fetch('http://localhost:3001/product/list')).json());
-		debugger;
 		Product.render();
 	}
 
