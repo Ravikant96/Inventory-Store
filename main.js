@@ -15,6 +15,7 @@ class Product {
 	static async load() {
 
 		Product.response = (await (await fetch('http://localhost:3001/product/list')).json());
+		debugger;
 		Product.render();
 	}
 
@@ -29,7 +30,7 @@ class Product {
 				<td>EDIT</td>
 				<td>Delete</td>
 			`;
-			Product.container.insertAdjecentHTML('beforeend', tr);
+			Product.container.appendChild(tr);
 		}
 	}
 }
