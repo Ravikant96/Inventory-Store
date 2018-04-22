@@ -1,7 +1,6 @@
 window.onload = () => {
 	
 	(async () => {
-		var event;
 		await product();
 	})();
 };
@@ -11,6 +10,16 @@ async function product() {
 	const container = document.querySelector('body table tbody');
 	container.textContent = null;
 	const response = await (await fetch('http://localhost:3001/product/list')).json();
+
+	if(window.add_event)
+		document.querySelector('#add').removeEventListener('click', add_event);
+
+	document.querySelector('#add').addEventListener('click', window.add_event = () => {
+		if(window.event)
+			document.querySelector('#form form').removeEventListener('submit', window.event);
+
+		Add_new();
+	})
 
 	for(const data of response) {
 
@@ -34,13 +43,41 @@ async function product() {
 		container.appendChild(tr);
 	}
 }
-async function Edit(data) {
+function toggle() {
 	document.querySelector('#product section#list').classList.add('hidden');
 	document.querySelector('#product section#form').classList.remove('hidden');
 	document.querySelector('#product section#form #back').addEventListener('click', () => {
 		document.querySelector('#product section#list').classList.remove('hidden');
 		document.querySelector('#product section#form').classList.add('hidden');
 	});
+}
+function Add_new() {
+	toggle();
+
+	document.querySelector('#form h2').textContent = 'Add new product';
+	
+	const form = document.querySelector('#form form');
+	form.reset();
+
+	form.addEventListener('submit', window.event = async (e) => {
+
+		e.preventDefault();
+		
+		const option = {
+			method: 'POST',
+			headers: {
+				'name': form.name.value,
+				'price': form.price.value,
+				'gst': form.gst.value,
+			}
+		}
+		await fetch('http://localhost:3001/product/insert', option);
+		confirm('A new product added');
+		await product();
+	});
+}
+async function Edit(data) {
+	toggle();
 
 	document.querySelector('#form h2').textContent = 'Edit product ' + data.ID;
 
@@ -50,10 +87,10 @@ async function Edit(data) {
 	form.name.value = data.name;
 	form.price.value = data.price;
 	form.gst.value = data.gst;
-	if(event)
+	if(window.event)
 		form.removeEventListener('submit', event);
 
-	form.addEventListener('submit', event = async (e) => {
+	form.addEventListener('submit', window.event = async (e) => {
 
 		e.preventDefault();
 

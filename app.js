@@ -43,8 +43,11 @@ server.route([{
 	method: 'POST',
 	path: '/product/insert',
 	handler: function(req, res) {
-		let product_name = req.headers.product_name;
-		var sql = "INSERT INTO tb_products (ID,name) VALUES ('','" + product_name + "')";
+		let product_name = req.headers.name,
+			price = req.headers.price,
+			gst = req.headers.gst;
+
+		var sql = "INSERT INTO tb_products (name,price,gst) VALUES ('" + product_name + "','"+ price+"','"+gst+"')";
 		con.query(sql, function(err) {
 			if(err)
 				throw err;
@@ -71,10 +74,10 @@ server.route([{
 	method: 'POST',
 	path: '/product/update',
 	handler: function(req, res) {
-		let id = req.headers.id;
-		let name = req.headers.name;
-		let price = req.headers.price; 
-		let gst = req.headers.gst; 
+		let id = req.headers.id,
+			name = req.headers.name,
+			price = req.headers.price, 
+			gst = req.headers.gst; 
 		var sql = "UPDATE tb_products set name='"+name+"', price='"+price+"', gst='"+gst+"' where id='"+id+"'";
 		con.query(sql, function(err) {
 			if(err)
