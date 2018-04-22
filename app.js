@@ -9,6 +9,9 @@ const server = new Hapi.Server();
 server.connection({
 	host: 'localhost',
 	port: 3001,
+	routes: {
+		cors: true
+	}
 })
 
 var con = mysql.createConnection({
@@ -34,7 +37,7 @@ server.route([{
 				throw err;
 			res(row);
 		});
-	}
+	} 
 },
 {
 	method: 'POST',
