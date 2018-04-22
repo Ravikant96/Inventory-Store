@@ -43,7 +43,7 @@ server.route([{
 	method: 'POST',
 	path: '/product/insert',
 	handler: function(req, res) {
-		let product_name = req.payload.product_name;
+		let product_name = req.headers.product_name;
 		var sql = "INSERT INTO tb_products (ID,name) VALUES ('','" + product_name + "')";
 		con.query(sql, function(err) {
 			if(err)
@@ -57,13 +57,30 @@ server.route([{
 	method: 'POST',
 	path: '/product/delete',
 	handler: function(req, res) {
-		let id = req.payload.id;
+		let id = req.headers.id;
 		var sql = "DELETE from tb_products where ID = '"+id+"'";
 		con.query(sql, function(err) {
 			if(err)
 				throw err;
 
 			res({status: '1 row deleted'});
+		});
+	}
+},
+{
+	method: 'POST',
+	path: '/product/update',
+	handler: function(req, res) {
+		let id = req.headers.id;
+		let name = req.headers.name;
+		let price = req.headers.price; 
+		let gst = req.headers.gst; 
+		var sql = "UPDATE tb_products set name='"+name+"', price='"+price+"', gst='"+gst+"' where id='"+id+"'";
+		con.query(sql, function(err) {
+			if(err)
+				throw err;
+
+			res({status: '1 row updated'});
 		});
 	}
 }])
